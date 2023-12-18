@@ -21,41 +21,7 @@ importers:
         specifier: ^1.11.2
         version: 1.11.2
 
-  apps/api:
-    dependencies:
-      express:
-        specifier: ^4.18.2
-        version: 4.18.2
-    devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../../packages/typescript-config
-      '@types/express':
-        specifier: ^4.17.21
-        version: 4.17.21
-      '@types/node':
-        specifier: ^20.10.4
-        version: 20.10.4
-      esbuild:
-        specifier: ^0.19.9
-        version: 0.19.9
-      esbuild-register:
-        specifier: ^3.5.0
-        version: 3.5.0(esbuild@0.19.9)
-      eslint:
-        specifier: ^8.53.0
-        version: 8.54.0
-      nodemon:
-        specifier: ^3.0.2
-        version: 3.0.2
-      typescript:
-        specifier: ^5.2.2
-        version: 5.2.2
-
-  apps/docs:
+  apps/advertiser-dash:
     dependencies:
       '@repo/ui':
         specifier: workspace:*
@@ -93,7 +59,84 @@ importers:
         version: 18.2.3
       eslint:
         specifier: ^8.53.0
-        version: 8.53.0
+        version: 8.54.0
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
+
+  apps/api:
+    dependencies:
+      express:
+        specifier: ^4.18.2
+        version: 4.18.2
+    devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
+      '@types/node':
+        specifier: ^20.10.4
+        version: 20.10.4
+      esbuild:
+        specifier: ^0.19.9
+        version: 0.19.9
+      esbuild-register:
+        specifier: ^3.5.0
+        version: 3.5.0(esbuild@0.19.9)
+      eslint:
+        specifier: ^8.53.0
+        version: 8.54.0
+      nodemon:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
+
+  apps/publisher-dash:
+    dependencies:
+      '@repo/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      next:
+        specifier: ^14.0.3
+        version: 14.0.3(react-dom@18.2.0)(react@18.2.0)
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+    devDependencies:
+      '@next/eslint-plugin-next':
+        specifier: ^14.0.2
+        version: 14.0.2
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      '@types/eslint':
+        specifier: ^8.44.7
+        version: 8.44.7
+      '@types/node':
+        specifier: ^17.0.12
+        version: 17.0.45
+      '@types/react':
+        specifier: ^18.0.22
+        version: 18.2.5
+      '@types/react-dom':
+        specifier: ^18.0.7
+        version: 18.2.3
+      eslint:
+        specifier: ^8.53.0
+        version: 8.54.0
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -992,7 +1035,7 @@ packages:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 20.5.2
+      '@types/node': 20.10.4
     dev: true
 
   /@types/http-errors@2.0.4:
@@ -1096,7 +1139,7 @@ packages:
   /@types/through@0.0.30:
     resolution: {integrity: sha512-FvnCJljyxhPM3gkRgWmxmDZyAQSiBQQWLI0A0VFL0K7W1oRUrPJSqNO0NvTnLkBcotdlp3lKvaT0JrnyRDkzOg==}
     dependencies:
-      '@types/node': 20.5.2
+      '@types/node': 20.10.4
     dev: true
 
   /@typescript-eslint/eslint-plugin@6.11.0(@typescript-eslint/parser@6.11.0)(eslint@8.54.0)(typescript@5.2.2):
