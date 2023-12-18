@@ -6,6 +6,7 @@ const project = resolve(process.cwd(), "tsconfig.json");
 module.exports = {
   extends: [
     "eslint:recommended",
+    "plugin:prettier/recommended",
     "prettier",
     require.resolve("@vercel/style-guide/eslint/next"),
     "eslint-config-turbo",
@@ -30,6 +31,7 @@ module.exports = {
     // Ignore dotfiles
     ".*.js",
     "node_modules/",
+    "dist/"
   ],
   overrides: [{ files: ["*.js?(x)", "*.ts?(x)"] }],
 };
