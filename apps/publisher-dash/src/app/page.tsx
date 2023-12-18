@@ -1,5 +1,5 @@
 const Page = () => {
-  // color 
+  // color
   return <div className="">Page</div>;
 };
 
