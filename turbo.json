@@ -18,8 +18,7 @@
         "dependsOn": ["^lint"]
     },
     "dev": {
-        "cache": true,
-        "persistent": true
+        "cache": false
     }
   }
 }
