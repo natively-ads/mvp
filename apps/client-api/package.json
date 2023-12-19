@@ -1,5 +1,5 @@
 {
-    "name": "api",
+    "name": "client-api",
     "version": "1.0.0",
     "description": "",
     "scripts": {
