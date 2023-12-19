@@ -9,6 +9,7 @@
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "generate:component": "turbo gen react-component"
   },
   "devDependencies": {

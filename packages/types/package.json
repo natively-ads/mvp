@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "generate": "(cd ../../ && supabase gen types typescript --local > ./packages/types/src/database.ts) && prettier --write \"src/**/*.{ts,tsx,md}\"",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "build": "tsup",
     "dev": "tsup --watch",
     "lint": "eslint src/**",

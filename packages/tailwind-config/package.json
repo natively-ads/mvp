@@ -5,6 +5,9 @@
   "exports": {
     ".": "./tailwind.config.ts"
   },
+  "scripts": {
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "tailwindcss": "^3.3.6"

@@ -5,6 +5,8 @@
         "build": "turbo build",
         "dev": "dotenv -- turbo dev",
         "lint": "turbo lint",
+        "generate": "turbo run generate",
+        "clean": "turbo run clean && rm -rf node_modules",
         "format": "prettier --write \"**/*.{ts,tsx,md}\""
     },
     "devDependencies": {

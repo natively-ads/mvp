@@ -1,0 +1,9 @@
+{
+    "extends": ["//"],
+    "pipeline": {
+      "generate": {
+        "dependsOn": ["@repo/supabase#start"]
+      }
+    }
+  }
+  

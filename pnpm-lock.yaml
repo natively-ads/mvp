@@ -211,6 +211,8 @@ importers:
         specifier: ^5.2.2
         version: 5.2.2
 
+  supabase: {}
+
 packages:
 
   /@aashutoshrathi/word-wrap@1.2.6:
