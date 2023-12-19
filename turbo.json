@@ -14,11 +14,30 @@
         "dependsOn": ["^build"],
         "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
-    "lint": {
-        "dependsOn": ["^lint"]
-    },
     "dev": {
         "cache": false
-    }
+    },
+    "format:write": {
+        "outputs": []
+      },
+      "format:check": {
+        "outputs": []
+      },
+      "lint": {
+        "dependsOn": ["format:check"],
+        "outputs": []
+      },
+      "lint:fix": {
+        "dependsOn": ["format:write"],
+        "outputs": []
+      },
+      "lint:report": {
+        "dependsOn": ["format:check"],
+        "outputs": ["lint-results/**"]
+      },
+      "typecheck": {
+        "dependsOn": ["^build"],
+        "outputs": []
+      }
   }
 }
