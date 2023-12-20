@@ -4,8 +4,14 @@
     "scripts": {
         "build": "turbo build",
         "dev": "dotenv -- turbo dev",
-        "lint": "turbo lint",
-        "format": "prettier --write \"**/*.{ts,tsx,md}\""
+        "generate": "turbo run generate",
+        "lint": "turbo run lint",
+        "lint:report": "turbo run lint:report",
+        "lint:fix": "turbo run lint:fix",
+        "typecheck": "turbo run typecheck",
+        "clean": "turbo run clean && rm -rf node_modules",
+        "format:write": "turbo run format:write",
+        "format:check": "turbo run format:check"
     },
     "devDependencies": {
         "@repo/eslint-config": "workspace:*",

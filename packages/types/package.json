@@ -1,15 +1,14 @@
 {
-  "name": "client-api",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@repo/types",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch --onSuccess 'node dist/index.js'",
-    "start": "node dist/index.js",
+    "generate": "(cd ../../ && supabase gen types typescript --local > ./packages/types/src/database.ts) && prettier --write \"src/**/*.{ts,tsx,md}\"",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsup",
+    "dev": "tsup --watch",
     "lint": "eslint src/**",
-    "lint:report": "eslint src/** --format json --output-file ./lint-results/client-api.json",
+    "lint:report": "eslint src/** --format json --output-file ./lint-results/types.json",
     "lint:fix": "eslint src/** --fix",
     "typecheck": "tsc --pretty --noEmit",
     "format:write": "prettier --write \"src/**/*.{ts,tsx,md}\"",
@@ -18,15 +17,11 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/express": "^4.17.21",
-    "@types/node": "^20.10.4",
-    "esbuild": "^0.19.9",
-    "esbuild-register": "^3.5.0",
+    "@supabase/supabase-js": "^2.39.1",
+    "@types/eslint": "^8.44.7",
+    "@types/node": "^20.5.2",
     "eslint": "^8.53.0",
     "tsup": "^8.0.1",
     "typescript": "^5.2.2"
-  },
-  "dependencies": {
-    "express": "^4.18.2"
   }
 }
