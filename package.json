@@ -3,6 +3,7 @@
     "private": true,
     "scripts": {
         "build": "turbo build",
+        "build:packages": "turbo run build --filter=./packages/*",
         "dev": "dotenv -- turbo dev",
         "generate": "turbo run generate",
         "lint": "turbo run lint",
