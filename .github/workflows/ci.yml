@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  verify-types:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,30 +14,14 @@ jobs:
       - uses: supabase/setup-cli@v1
         with:
           version: latest
-
-      - uses: pnpm/action-setup@v2
     
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Generate the types into by running pnpm script
-        run: pnpm run generate
+      - run: supabase db start
+      - run: supabase db lint
+      - run: supabase test db
 
       - name: Verify generated types are checked in
         run: |
+          supabase gen types typescript --local > ./packages/types/src/database.ts
           if git diff --ignore-space-at-eol --exit-code --quiet; then
             echo "Detected uncommitted changes after build. See status below:"
             git diff
