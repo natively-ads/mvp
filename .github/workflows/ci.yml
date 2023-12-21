@@ -35,6 +35,9 @@ jobs:
 
       - name: Generate the types into by running pnpm script
         run: pnpm run generate
+    
+      - name: Typecheck everything
+        run: pnpm run typecheck
 
       - name: Verify generated types are checked in
         run: |
