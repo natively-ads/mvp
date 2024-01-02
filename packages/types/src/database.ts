@@ -91,7 +91,7 @@ export interface Database {
       };
       campaigns: {
         Row: {
-          ads: number[] | null;
+          adId: number;
           advertiserId: number;
           budget: number;
           campaignId: number;
@@ -101,7 +101,7 @@ export interface Database {
           title: string | null;
         };
         Insert: {
-          ads?: number[] | null;
+          adId: number;
           advertiserId: number;
           budget?: number;
           campaignId?: number;
@@ -111,7 +111,7 @@ export interface Database {
           title?: string | null;
         };
         Update: {
-          ads?: number[] | null;
+          adId?: number;
           advertiserId?: number;
           budget?: number;
           campaignId?: number;
@@ -121,6 +121,12 @@ export interface Database {
           title?: string | null;
         };
         Relationships: [
+          {
+            foreignKeyName: "campaigns_adId_fkey";
+            columns: ["adId"];
+            referencedRelation: "ads";
+            referencedColumns: ["adId"];
+          },
           {
             foreignKeyName: "campaigns_advertiserId_fkey";
             columns: ["advertiserId"];
@@ -162,7 +168,6 @@ export interface Database {
       };
       impressions: {
         Row: {
-          adId: number;
           campaignId: number;
           impressionId: number;
           price: number;
@@ -170,7 +175,6 @@ export interface Database {
           timestamp: string;
         };
         Insert: {
-          adId: number;
           campaignId: number;
           impressionId?: number;
           price: number;
@@ -178,7 +182,6 @@ export interface Database {
           timestamp?: string;
         };
         Update: {
-          adId?: number;
           campaignId?: number;
           impressionId?: number;
           price?: number;
