@@ -34,33 +34,221 @@ export interface Database {
   };
   public: {
     Tables: {
-      advertisers: {
+      ads: {
         Row: {
+          adId: number;
+          advertiserId: number;
+          content: Json;
           created_at: string;
-          id: number;
+          networkId: number;
         };
         Insert: {
+          adId?: number;
+          advertiserId: number;
+          content: Json;
           created_at?: string;
-          id?: number;
+          networkId: number;
         };
         Update: {
+          adId?: number;
+          advertiserId?: number;
+          content?: Json;
           created_at?: string;
-          id?: number;
+          networkId?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "ads_advertiserId_fkey";
+            columns: ["advertiserId"];
+            referencedRelation: "advertisers";
+            referencedColumns: ["advertiserId"];
+          },
+          {
+            foreignKeyName: "ads_networkId_fkey";
+            columns: ["networkId"];
+            referencedRelation: "networks";
+            referencedColumns: ["networkId"];
+          },
+        ];
+      };
+      advertisers: {
+        Row: {
+          advertiserId: number;
+          created_at: string;
+          name: string;
+        };
+        Insert: {
+          advertiserId?: number;
+          created_at?: string;
+          name: string;
+        };
+        Update: {
+          advertiserId?: number;
+          created_at?: string;
+          name?: string;
         };
         Relationships: [];
+      };
+      campaigns: {
+        Row: {
+          ads: number[] | null;
+          advertiserId: number;
+          budget: number;
+          campaignId: number;
+          cpmBid: number;
+          created_at: string;
+          networkId: number;
+          title: string | null;
+        };
+        Insert: {
+          ads?: number[] | null;
+          advertiserId: number;
+          budget?: number;
+          campaignId?: number;
+          cpmBid?: number;
+          created_at?: string;
+          networkId: number;
+          title?: string | null;
+        };
+        Update: {
+          ads?: number[] | null;
+          advertiserId?: number;
+          budget?: number;
+          campaignId?: number;
+          cpmBid?: number;
+          created_at?: string;
+          networkId?: number;
+          title?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "campaigns_advertiserId_fkey";
+            columns: ["advertiserId"];
+            referencedRelation: "advertisers";
+            referencedColumns: ["advertiserId"];
+          },
+          {
+            foreignKeyName: "campaigns_networkId_fkey";
+            columns: ["networkId"];
+            referencedRelation: "networks";
+            referencedColumns: ["networkId"];
+          },
+        ];
+      };
+      clicks: {
+        Row: {
+          clickId: number;
+          impressionId: number;
+          timestamp: string;
+        };
+        Insert: {
+          clickId?: number;
+          impressionId: number;
+          timestamp?: string;
+        };
+        Update: {
+          clickId?: number;
+          impressionId?: number;
+          timestamp?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "clicks_impressionId_fkey";
+            columns: ["impressionId"];
+            referencedRelation: "impressions";
+            referencedColumns: ["impressionId"];
+          },
+        ];
+      };
+      impressions: {
+        Row: {
+          adId: number;
+          campaignId: number;
+          impressionId: number;
+          price: number;
+          publisherId: number;
+          timestamp: string;
+        };
+        Insert: {
+          adId: number;
+          campaignId: number;
+          impressionId?: number;
+          price: number;
+          publisherId: number;
+          timestamp?: string;
+        };
+        Update: {
+          adId?: number;
+          campaignId?: number;
+          impressionId?: number;
+          price?: number;
+          publisherId?: number;
+          timestamp?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "impressions_campaignId_fkey";
+            columns: ["campaignId"];
+            referencedRelation: "campaigns";
+            referencedColumns: ["campaignId"];
+          },
+          {
+            foreignKeyName: "impressions_publisherId_fkey";
+            columns: ["publisherId"];
+            referencedRelation: "publishers";
+            referencedColumns: ["publisherId"];
+          },
+        ];
+      };
+      networks: {
+        Row: {
+          adFormat: Json;
+          created_at: string;
+          description: string | null;
+          name: string | null;
+          networkId: number;
+          publisherId: number;
+        };
+        Insert: {
+          adFormat: Json;
+          created_at?: string;
+          description?: string | null;
+          name?: string | null;
+          networkId?: number;
+          publisherId: number;
+        };
+        Update: {
+          adFormat?: Json;
+          created_at?: string;
+          description?: string | null;
+          name?: string | null;
+          networkId?: number;
+          publisherId?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "networks_publisherId_fkey";
+            columns: ["publisherId"];
+            referencedRelation: "publishers";
+            referencedColumns: ["publisherId"];
+          },
+        ];
       };
       publishers: {
         Row: {
           created_at: string;
-          id: number;
+          name: string;
+          publisherId: number;
         };
         Insert: {
           created_at?: string;
-          id?: number;
+          name: string;
+          publisherId?: number;
         };
         Update: {
           created_at?: string;
-          id?: number;
+          name?: string;
+          publisherId?: number;
         };
         Relationships: [];
       };
