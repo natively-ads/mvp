@@ -1,0 +1,32 @@
+name: Supabase Consistency
+
+on:
+    pull_request:
+        paths:
+            - "supabase/migrations/**"
+            - "supabase/functions/**"
+            - "packages/types/src/database.ts"
+    workflow_dispatch:
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: supabase/setup-cli@v1
+              with:
+                  version: latest
+
+            - run: supabase db start
+            - run: supabase db lint
+
+            - name: Verify generated types are checked in
+              run: |
+                  supabase gen types typescript --local > ./packages/types/src/database.ts
+                  if git diff --ignore-space-at-eol --exit-code --quiet; then
+                  echo "Detected uncommitted changes after build. See status below:"
+                  git diff
+                  exit 1
+                  fi
