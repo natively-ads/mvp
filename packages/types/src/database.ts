@@ -211,6 +211,7 @@ export interface Database {
           name: string | null;
           networkId: number;
           publisherId: number;
+          reservePrice: number;
         };
         Insert: {
           adFormat: Json;
@@ -219,6 +220,7 @@ export interface Database {
           name?: string | null;
           networkId?: number;
           publisherId: number;
+          reservePrice?: number;
         };
         Update: {
           adFormat?: Json;
@@ -227,6 +229,7 @@ export interface Database {
           name?: string | null;
           networkId?: number;
           publisherId?: number;
+          reservePrice?: number;
         };
         Relationships: [
           {
