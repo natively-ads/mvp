@@ -3,8 +3,7 @@ name: Supabase Consistency
 on:
     pull_request:
         paths:
-            - "supabase/migrations/**"
-            - "supabase/functions/**"
+            - "supabase/**"
             - "packages/types/src/database.ts"
     workflow_dispatch:
 
