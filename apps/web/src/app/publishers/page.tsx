@@ -1,7 +1,7 @@
 // the landing page for publishers (just options to go to other pages)
 
-const Page = () => {
-  return <div>Page</div>;
+const PublisherPage = () => {
+  return <div>Publisher</div>;
 };
 
-export default Page;
+export default PublisherPage;
