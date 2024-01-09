@@ -56,3 +56,39 @@ export async function POST(
     });
   }
 }
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { advertiserId: string } }
+) {
+  try {
+    const cookieStore = cookies();
+    const client = createClient(cookieStore);
+
+    const url = new URL(request.url);
+    const adId = url.searchParams.get("adId");
+
+    if (!adId) {
+      throw new Error("Missing adId");
+    }
+
+    const { error } = await client
+      .from("ads")
+      .delete()
+      .eq("advertiserId", params.advertiserId)
+      .eq("adId", adId);
+
+    if (error) {
+      throw error;
+    }
+
+    return NextResponse.json("Success");
+  } catch (err: any) {
+    return new NextResponse(JSON.stringify({ error: err.message }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+}
