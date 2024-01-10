@@ -1,26 +1,23 @@
 import { createClient } from "@/app/util/supabase/server";
-import { advertiserId } from "@/lib/config";
 import { cookies } from "next/headers";
 import { NextResponse, NextRequest } from "next/server";
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { advertiserId: string } }
-) {
+export async function GET(request: NextRequest) {
   const cookieStore = cookies();
   const client = createClient(cookieStore);
-  const rawCampaigns = await client
-    .from("campaigns")
+
+  const url = new URL(request.url);
+  const advertiserId = url.searchParams.get("advertiserId");
+
+  const rawAds = await client
+    .from("ads")
     .select("*")
-    .eq("advertiserId", params.advertiserId);
-  const campaignsJson = rawCampaigns.data ?? [];
-  return NextResponse.json(campaignsJson);
+    .eq("advertiserId", advertiserId);
+  const adsJson = rawAds.data ?? [];
+  return NextResponse.json(adsJson);
 }
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { advertiserId: string } }
-) {
+export async function POST(request: NextRequest) {
   try {
     const cookieStore = cookies();
     const client = createClient(cookieStore);
@@ -31,18 +28,15 @@ export async function POST(
       throw new Error("Missing Body");
     }
 
-    const { networkId, adId, title, budget, cpmBid } = body;
+    const { networkId, content, advertiserId } = body;
 
     const { error } = await client
-      .from("campaigns")
+      .from("ads")
       .insert([
         {
           networkId: networkId,
-          advertiserId: params.advertiserId,
-          adId: adId,
-          budget: budget,
-          cpmBid: cpmBid,
-          title: title,
+          advertiserId: advertiserId,
+          content: content,
         },
       ])
       .select();
@@ -61,26 +55,23 @@ export async function POST(
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { advertiserId: string } }
-) {
+export async function DELETE(request: NextRequest) {
   try {
     const cookieStore = cookies();
     const client = createClient(cookieStore);
 
     const url = new URL(request.url);
-    const campaignId = url.searchParams.get("campaignId");
-
-    if (!campaignId) {
+    const adId = url.searchParams.get("adId");
+    const advertiserId = url.searchParams.get("advertiserId");
+    if (!adId) {
       throw new Error("Missing adId");
     }
 
     const { error } = await client
-      .from("campaigns")
+      .from("ads")
       .delete()
-      .eq("advertiserId", params.advertiserId)
-      .eq("campaignId", campaignId);
+      .eq("advertiserId", advertiserId)
+      .eq("adId", adId);
 
     if (error) {
       throw error;
