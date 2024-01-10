@@ -3,6 +3,8 @@ import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
+	// Can either get many networks or filter by publisherId
+
 	const cookieStore = cookies();
 	const client = createClient(cookieStore);
 
@@ -20,3 +22,5 @@ export async function GET(req: NextRequest) {
 	const networksJson = rawNetworks.data ?? [];
 	return NextResponse.json({ Result: networksJson });
 }
+
+export async function POST(req: NextRequest) {}
