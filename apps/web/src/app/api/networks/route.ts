@@ -1,11 +1,22 @@
 import { createClient } from '@/app/util/supabase/server';
 import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
 	const cookieStore = cookies();
 	const client = createClient(cookieStore);
-	const rawNetworks = await client.from('networks').select('*');
+
+	const url = new URL(req.url);
+	const publisherId = url.searchParams.get('publisherId');
+
+	let query = client.from('networks').select('*');
+
+	if (publisherId != null) {
+		query = query.eq('publisher_id', publisherId);
+	}
+
+	const rawNetworks = await query;
+
 	const networksJson = rawNetworks.data ?? [];
 	return NextResponse.json({ Result: networksJson });
 }
