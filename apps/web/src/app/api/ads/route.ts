@@ -1,6 +1,6 @@
 import { createClient } from '@/app/util/supabase/server';
 import { cookies } from 'next/headers';
-import { NextResponse, NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
 	const cookieStore = cookies();
@@ -8,11 +8,19 @@ export async function GET(request: NextRequest) {
 
 	const url = new URL(request.url);
 	const advertiserId = url.searchParams.get('advertiserId');
+	const networkId = url.searchParams.get('networkId');
 
-	const rawAds = await client
-		.from('ads')
-		.select('*')
-		.eq('advertiserId', advertiserId);
+	let query = client.from('ads').select('*');
+
+	if (advertiserId != null) {
+		query = query.eq('advertiserId', advertiserId);
+	}
+	if (networkId != null) {
+		query = query.eq('networkId', networkId);
+	}
+
+	const rawAds = await query;
+
 	const adsJson = rawAds.data ?? [];
 	return NextResponse.json(adsJson);
 }
