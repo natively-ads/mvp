@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
 
 	const cookieStore = cookies();
 	const client = createClient(cookieStore);
-
+	
 	const url = new URL(req.url);
 	const publisherId = url.searchParams.get('publisherId');
 
