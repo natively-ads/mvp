@@ -8,14 +8,17 @@ export async function GET(req: NextRequest) {
 
 	const cookieStore = cookies();
 	const client = createClient(cookieStore);
-	
+
 	const url = new URL(req.url);
 	const publisherId = url.searchParams.get('publisherId');
-
+	const networkId = url.searchParams.get('networkId');
 	let query = client.from('networks').select('*');
 
 	if (publisherId != null) {
 		query = query.eq('publisher_id', publisherId);
+	}
+	if (networkId != null) {
+		query = query.eq('networkId', networkId);
 	}
 
 	const rawNetworks = await query;
@@ -62,15 +65,13 @@ export async function POST(request: NextRequest) {
 	const cookieStore = cookies();
 	const client = createClient(cookieStore);
 
-	const rawNetwork = await client
-		.from('networks')
-		.insert({
-			publisherId,
-			name,
-			description,
-			reservePrice,
-			adFormat: adSchema,
-		});
+	const rawNetwork = await client.from('networks').insert({
+		publisherId,
+		name,
+		description,
+		reservePrice,
+		adFormat: adSchema,
+	});
 
 	const networkJson = rawNetwork.data ?? {};
 	return NextResponse.json({ data: networkJson });
