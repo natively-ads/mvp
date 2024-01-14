@@ -1,6 +1,6 @@
 import { Network, Ad, AdSchema } from '@repo/types';
 import { useEffect, useState } from 'react';
-import { jsonToAdSchema } from '@/app/util/schemaParser';
+import { jsonToAdSchema, getValueFromKey } from '@/app/util/schemaParser';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio';
 type AdPickerProps = {
 	network: Network;
@@ -54,7 +54,7 @@ export const AdPicker = (props: AdPickerProps) => {
 										return (
 											<p key={field.fieldId}>
 												<b className="mr-5">{field.value.toUpperCase()}:</b>
-												{ad.content && ad.content[field.value]}
+												{ad.content && getValueFromKey(ad.content, field.value)}
 											</p>
 										);
 									})}

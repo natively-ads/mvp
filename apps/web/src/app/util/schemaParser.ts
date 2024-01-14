@@ -9,3 +9,9 @@ export function jsonToAdSchema(json: Json): AdSchema {
 	}
 	return schema;
 }
+export function getValueFromKey(json: Json, key: string): string {
+	if (typeof json === 'object' && json !== null && !Array.isArray(json)) {
+		return JSON.stringify(json[key]);
+	}
+	return 'failed to parse';
+}
