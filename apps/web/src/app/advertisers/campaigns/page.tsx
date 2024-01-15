@@ -31,8 +31,8 @@ export default function CampaignsPage(): JSX.Element {
 							<div className="col-span-3">
 								<p className="text-3xl">{campaign.title}</p>
 								<p>
-									{formatDate(campaign.created_at)} -{' '}
-									{formatDate(campaign.created_at)}
+									{formatDate(campaign.start_date!)} -{' '}
+									{formatDate(campaign.end_date!)}
 								</p>
 							</div>
 							<div className="col-span-1 flex-row text-center ml-10">
