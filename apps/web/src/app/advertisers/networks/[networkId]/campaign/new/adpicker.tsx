@@ -7,6 +7,7 @@ type AdPickerProps = {
 	chosenAd: Ad | undefined;
 	setAd: (ad: Ad | undefined) => void;
 	advertiserId: string;
+	className: string;
 };
 
 export const AdPicker = (props: AdPickerProps) => {
@@ -32,7 +33,7 @@ export const AdPicker = (props: AdPickerProps) => {
 	};
 
 	return (
-		<div>
+		<div className={props.className}>
 			<RadioGroup className="flex" onValueChange={updateSelAd}>
 				{ads &&
 					props.network &&
