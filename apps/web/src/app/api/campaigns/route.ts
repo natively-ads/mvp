@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
 	const client = createClient(cookieStore);
 
 	const body = (await request.json()) as CreateCampaignRequestBody;
-
+	console.log(body);
 	if (!body) {
 		throw new Error('Missing Body');
 	}
@@ -62,6 +62,7 @@ export async function POST(request: NextRequest) {
 			title: title,
 		})
 		.select();
+	console.log(error);
 
 	if (error != null || data == null) {
 		return NextResponse.json(

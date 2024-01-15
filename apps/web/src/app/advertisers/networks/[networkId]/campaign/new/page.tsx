@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import { Network, Campaign, Ad } from '@repo/types';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { DatePicker } from '@/components/ui/DatePicker';
+import { MoveRight as MoveRightIcon } from 'lucide-react';
 import { AdPicker } from './adpicker';
 const Page = ({ params }: { params: { networkId: string } }) => {
 	const [network, setNetwork] = useState<Network | undefined>();
@@ -10,6 +13,8 @@ const Page = ({ params }: { params: { networkId: string } }) => {
 	const [campaignBudget, setCampaignBudget] = useState<string | undefined>();
 	const [cpmBid, setBid] = useState<string | undefined>();
 	const [ad, setAd] = useState<Ad | undefined>();
+	const [startDate, setStartDate] = useState<Date>();
+	const [endDate, setEndDate] = useState<Date>();
 	useEffect(() => {
 		const fetchData = async () => {
 			const response = await fetch(
@@ -20,11 +25,45 @@ const Page = ({ params }: { params: { networkId: string } }) => {
 			if (networks[0]) {
 				setNetwork(networks[0]);
 				setBid(`${networks[0]?.reservePrice * 1.05}`);
+				setCampaignBudget(
+					`${Math.round(networks[0]?.reservePrice * 1.05 * 8)}`,
+				);
 			}
 		};
 
 		fetchData();
 	}, []);
+
+	const createCampaign = async () => {
+		console.log('Attempting campaign creation...');
+		if (
+			!campaignTitle ||
+			!campaignBudget ||
+			!cpmBid ||
+			!startDate ||
+			!endDate ||
+			!ad ||
+			!network
+		) {
+			return;
+		}
+
+		const campaignBody = {
+			title: campaignTitle,
+			budget: parseFloat(campaignBudget),
+			adId: ad.adId,
+			networkId: network.networkId,
+			cpmBid: parseFloat(cpmBid),
+			advertiserId: '1',
+		};
+		const response = await fetch('/api/campaigns', {
+			method: 'POST',
+			body: JSON.stringify(campaignBody),
+		});
+		const jsonData = await response.json();
+		console.log(jsonData);
+	};
+
 	return (
 		<div>
 			{network && (
@@ -50,12 +89,13 @@ const Page = ({ params }: { params: { networkId: string } }) => {
 						chosenAd={ad}
 						setAd={setAd}
 						advertiserId={'1'}
+						className="mt-5"
 					/>
 					<p className="text-2xl mt-5">Budgets and Bidding</p>
 					<div className="flex  mt-5 align-cent">
 						<p className="text-lg lh-2.5rem">Total Budget ($):</p>
 						<Input
-							value={campaignTitle}
+							value={campaignBudget}
 							onChange={(e) => setCampaignBudget(e.target.value)}
 							className="w-80 ml-10"
 						/>
@@ -70,9 +110,26 @@ const Page = ({ params }: { params: { networkId: string } }) => {
 							className="w-80 ml-10"
 						/>
 					</div>
-					<p className="text-sm mt-2">
-						We'll make sure you never spend more than the above amounts
+					<p className="text-sm mt-6">
+						We'll make sure you never spend more than the above amounts.
 					</p>
+					<p className="text-2xl mt-5">Schedule Your Campaign</p>
+					<div className="flex mt-5 align-center">
+						<DatePicker
+							date={startDate}
+							setDate={setStartDate}
+							instructionLabel="Set Start Date"
+						/>
+						<MoveRightIcon className="mx-5 mt-1.5" />
+						<DatePicker
+							date={endDate}
+							setDate={setEndDate}
+							instructionLabel="Set End Date"
+						/>
+					</div>
+					<Button className="mt-5" onClick={createCampaign}>
+						Launch Campaign
+					</Button>
 				</div>
 			)}
 		</div>
