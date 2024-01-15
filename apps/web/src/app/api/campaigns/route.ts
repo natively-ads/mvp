@@ -37,6 +37,8 @@ interface CreateCampaignRequestBody {
 	title: Campaign['title'];
 	budget: Campaign['budget'];
 	cpmBid: Campaign['cpmBid'];
+	startDate: Campaign['start_date'];
+	endDate: Campaign['end_date'];
 }
 
 export async function POST(request: NextRequest) {
@@ -44,12 +46,21 @@ export async function POST(request: NextRequest) {
 	const client = createClient(cookieStore);
 
 	const body = (await request.json()) as CreateCampaignRequestBody;
-	console.log(body);
+
 	if (!body) {
 		throw new Error('Missing Body');
 	}
 
-	const { networkId, adId, title, budget, cpmBid, advertiserId } = body;
+	const {
+		networkId,
+		adId,
+		title,
+		budget,
+		cpmBid,
+		advertiserId,
+		startDate,
+		endDate,
+	} = body;
 
 	const { data, error } = await client
 		.from('campaigns')
@@ -60,6 +71,8 @@ export async function POST(request: NextRequest) {
 			budget: budget,
 			cpmBid: cpmBid,
 			title: title,
+			start_date: startDate,
+			end_date: endDate,
 		})
 		.select();
 	console.log(error);

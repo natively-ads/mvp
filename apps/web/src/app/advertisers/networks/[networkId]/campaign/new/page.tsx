@@ -24,7 +24,7 @@ const Page = ({ params }: { params: { networkId: string } }) => {
 			const networks = jsonData.data! as Network[];
 			if (networks[0]) {
 				setNetwork(networks[0]);
-				setBid(`${networks[0]?.reservePrice * 1.05}`);
+				setBid(`${Math.round(100 * networks[0]?.reservePrice * 1.05) / 100}`);
 				setCampaignBudget(
 					`${Math.round(networks[0]?.reservePrice * 1.05 * 8)}`,
 				);
@@ -35,7 +35,6 @@ const Page = ({ params }: { params: { networkId: string } }) => {
 	}, []);
 
 	const createCampaign = async () => {
-		console.log('Attempting campaign creation...');
 		if (
 			!campaignTitle ||
 			!campaignBudget ||
@@ -55,13 +54,16 @@ const Page = ({ params }: { params: { networkId: string } }) => {
 			networkId: network.networkId,
 			cpmBid: parseFloat(cpmBid),
 			advertiserId: '1',
+			startDate: startDate,
+			endDate: endDate,
 		};
+
 		const response = await fetch('/api/campaigns', {
 			method: 'POST',
 			body: JSON.stringify(campaignBody),
 		});
+
 		const jsonData = await response.json();
-		console.log(jsonData);
 	};
 
 	return (
