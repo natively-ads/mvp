@@ -1,5 +1,6 @@
 import { createClient } from '@/util/supabase/server';
-import { AdSchema, Network } from '@repo/types';
+import { Json, Network } from '@repo/types';
+import Ajv from 'ajv';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -32,22 +33,16 @@ interface CreateNetworkRequestBody {
 	name: Network['name'];
 	description: Network['description'];
 	reservePrice: Network['reservePrice'];
-	adSchema: AdSchema;
+	adFormat: Json;
 }
 
-const isValidAdSchema = (adSchema: AdSchema): boolean => {
-	for (const adField of adSchema) {
-		if (adField.type === 'string' && typeof adField.value !== 'string') {
-			return false;
-		} else if (adField.type === 'number' && typeof adField.value !== 'number') {
-			return false;
-		} else if (
-			adField.type === 'boolean' &&
-			typeof adField.value !== 'boolean'
-		) {
-			return false;
-		}
-		// Additional type checks can be added here if necessary
+const isValidAdSchema = (adFormat: any): boolean => {
+	const ajv = new Ajv();
+
+	const result = ajv.compile(adFormat);
+
+	if (result.errors && result.errors.length > 0) {
+		return false;
 	}
 
 	return true;
@@ -55,10 +50,10 @@ const isValidAdSchema = (adSchema: AdSchema): boolean => {
 
 export async function POST(request: NextRequest) {
 	const requestBody = (await request.json()) as CreateNetworkRequestBody;
-	const { publisherId, name, description, reservePrice, adSchema } =
+	const { publisherId, name, description, reservePrice, adFormat } =
 		requestBody;
 
-	if (!isValidAdSchema(adSchema)) {
+	if (!isValidAdSchema(adFormat)) {
 		return NextResponse.json({ error: 'Invalid ad schema' }, { status: 400 });
 	}
 
@@ -70,8 +65,10 @@ export async function POST(request: NextRequest) {
 		name,
 		description,
 		reservePrice,
-		adFormat: adSchema,
+		adFormat,
 	});
+
+	console.log('rawNetwork', rawNetwork);
 
 	const networkJson = rawNetwork.data ?? {};
 	return NextResponse.json({ data: networkJson });
