@@ -1,4 +1,4 @@
-import { createClient } from '@/app/util/supabase/server';
+import { createClient } from '@/util/supabase/server';
 import { Campaign } from '@repo/types';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';

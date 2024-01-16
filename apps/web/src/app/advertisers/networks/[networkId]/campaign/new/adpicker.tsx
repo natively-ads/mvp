@@ -1,7 +1,7 @@
-import { Network, Ad, AdSchema } from '@repo/types';
-import { useEffect, useState } from 'react';
-import { jsonToAdSchema, getValueFromKey } from '@/app/util/schemaParser';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio';
+import { getValueFromKey, jsonToAdSchema } from '@/util/schemaParser';
+import { Ad, AdSchema, Network } from '@repo/types';
+import { useEffect, useState } from 'react';
 type AdPickerProps = {
 	network: Network;
 	chosenAd: Ad | undefined;
