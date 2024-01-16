@@ -20,6 +20,21 @@ INSERT INTO "public"."ads" ("adId", "created_at", "networkId", "advertiserId", "
 
 
 INSERT INTO "public"."campaigns" ("campaignId", "created_at", "advertiserId", "title", "budget", "cpmBid", "networkId", "adId", "end_date", "start_date") VALUES
-        (4, '2024-01-15 02:40:55.254788+00', 1, 'My First Campaign', 420, 52.5, 2, 2, '2024-01-24', '2024-01-10');
+        (4, '2024-01-15 02:40:55.254788+00', 1, 'My First Campaign', 420, 60.5, 2, 2, '2024-01-24', '2024-01-10');
 
 
+INSERT INTO impressions ("impressionId", "campaignId", price, timestamp) VALUES
+(1, 4, 55.56, '2024-01-16 20:10:46.458089+00'),
+(2, 4, 57.3, '2024-01-16 20:11:01.856476+00'),
+(3, 4, 52.6, '2024-01-16 20:11:14.005498+00'),
+(4, 4, 50.9, '2024-01-16 20:11:26.627615+00'),
+(5, 4, 53, '2024-01-16 20:11:38.709947+00'),
+(6, 4, 55, '2024-01-16 21:20:58.317609+00'),
+(7, 4, 55, '2024-01-16 21:21:05.361789+00'),
+(9, 4, 52, '2024-01-16 21:21:17.375833+00');
+
+
+INSERT INTO clicks ("clickId", timestamp, "impressionId") VALUES
+(1, '2024-01-16 20:11:50.116898+00', 2),
+(2, '2024-01-16 20:12:04.441853+00', 5),
+(3, '2024-01-16 20:22:19.524584+00', 4);
