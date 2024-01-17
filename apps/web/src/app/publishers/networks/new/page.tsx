@@ -28,6 +28,7 @@ import {
 } from '@/components/ui/table';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Separator } from '@radix-ui/react-select';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -87,6 +88,7 @@ const adFieldsToJsonSchema = (adFields: AdField[]): JsonSchema => {
 };
 
 function CreateNetworkPage() {
+	const router = useRouter();
 	const [adFields, setAdFields] = useState<AdFieldsState>({});
 
 	const adForm = useForm<AdField>({
@@ -129,6 +131,9 @@ function CreateNetworkPage() {
 				adFormat: schema,
 			}),
 		});
+
+		// navigate to the networks page
+		router.push('/publishers/networks');
 	};
 
 	const addAdField = (

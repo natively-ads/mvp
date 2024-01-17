@@ -68,8 +68,6 @@ export async function POST(request: NextRequest) {
 		adFormat,
 	});
 
-	console.log('rawNetwork', rawNetwork);
-
 	const networkJson = rawNetwork.data ?? {};
 	return NextResponse.json({ data: networkJson });
 }
