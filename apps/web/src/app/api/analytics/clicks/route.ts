@@ -12,8 +12,7 @@ export async function GET(request: NextRequest) {
 	const networkId = url.searchParams.get('networkId');
 	const adId = url.searchParams.get('adId');
 	const campaignId = url.searchParams.get('campaignId');
-	const publisherId = url.searchParams.get('publisherId');
-
+	const publisherId = url.searchParams.get('publisherid');
 	let query = client.rpc('countclicks', {
 		adid: adId,
 		advertiserid: advertiserId,

@@ -3,15 +3,19 @@ import { Network } from '@repo/types';
 import { useEffect, useState } from 'react';
 import { buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
-export default function BrowsePage(): JSX.Element {
+const Page = () => {
 	const [networks, setNetworks] = useState<Network[]>([]);
+	const publisherId = 2;
 	const [cpms, setCpms] = useState<number[]>([]);
 	const [cpcs, setCPCs] = useState<number[]>([]);
 	const [ctrs, setCtrs] = useState<number[]>([]);
+	const [spends, setSpends] = useState<number[]>([]);
+	const [impressions, setImpressions] = useState<number[]>([]);
+	const [clicks, setClicks] = useState<number[]>([]);
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const networks = await fetch(`/api/networks`)
+			const networks = await fetch(`/api/networks?publisherid=${publisherId}`)
 				.then((res) => {
 					return res.json();
 				})
@@ -20,6 +24,36 @@ export default function BrowsePage(): JSX.Element {
 				});
 
 			const promises = networks.map(async (network) => {
+				const clicksProm = fetch(
+					`/api/analytics/clicks?networkId=${network.networkId}`,
+				)
+					.then((res) => {
+						return res.json();
+					})
+					.then((data: number) => {
+						return data;
+					});
+
+				const impressionsProm = fetch(
+					`/api/analytics/impressions?networkId=${network.networkId}`,
+				)
+					.then((res) => {
+						return res.json();
+					})
+					.then((data: number) => {
+						return data;
+					});
+
+				const spendProm = fetch(
+					`/api/analytics/spend?networkId=${network.networkId}`,
+				)
+					.then((res) => {
+						return res.json();
+					})
+					.then((data: number) => {
+						return Math.round(100 * data) / 100;
+					});
+
 				const ctrProm = fetch(
 					`/api/analytics/ctr?networkId=${network.networkId}`,
 				)
@@ -49,9 +83,19 @@ export default function BrowsePage(): JSX.Element {
 					.then((data: number) => {
 						return Math.round(100 * data) / 100;
 					});
-				const [ctr, cpm, cpc] = await Promise.all([ctrProm, cpmProm, cpcProm]);
+				const [clicks, impressions, spend, ctr, cpm, cpc] = await Promise.all([
+					clicksProm,
+					impressionsProm,
+					spendProm,
+					ctrProm,
+					cpmProm,
+					cpcProm,
+				]);
 				return {
 					network: network,
+					clicks: clicks,
+					impressions: impressions,
+					spend: spend,
 					ctr: ctr,
 					cpm: cpm,
 					cpc: cpc,
@@ -64,6 +108,15 @@ export default function BrowsePage(): JSX.Element {
 			const networks = data.map((network) => {
 				return network.network;
 			});
+			const clicks = data.map((network) => {
+				return network.clicks;
+			});
+			const impressions = data.map((network) => {
+				return network.impressions;
+			});
+			const spends = data.map((network) => {
+				return network.spend;
+			});
 			const ctrs = data.map((network) => {
 				return network.ctr;
 			});
@@ -75,15 +128,29 @@ export default function BrowsePage(): JSX.Element {
 			});
 
 			setNetworks(networks);
+			setClicks(clicks);
+			setImpressions(impressions);
+			setSpends(spends);
 			setCtrs(ctrs);
 			setCpms(cpms);
 			setCPCs(cpcs);
 		});
 	}, []);
 
+	useEffect(() => {
+		const fetchData = async () => {
+			const response = await fetch(`/api/networks?publisherid=${publisherId}`);
+			const jsonData = await response.json();
+			const networks = jsonData.data! as Network[];
+			setNetworks(networks);
+		};
+
+		fetchData();
+	}, []);
+
 	return (
 		<div>
-			<h1 className="text-5xl p-10">Browse All Networks</h1>
+			<h1 className="text-5xl p-10">My Networks</h1>
 			<div>
 				{networks.map((network, ind) => {
 					return (
@@ -96,27 +163,33 @@ export default function BrowsePage(): JSX.Element {
 								<p>{network.description}</p>
 							</div>
 							<div className="col-span-1 flex-row text-center ml-10">
-								<p className="text-2xl">${ctrs[ind]}</p>
-								<p className="italic">Average Click Through Rate</p>
+								<p className="text-2xl">
+									{impressions ? impressions[ind] : 'Fail'}
+									<span className="text-sm">
+										(${cpms ? cpms[ind] : 'Fail'})
+									</span>
+								</p>
+								<p className="italic">Impressions (CPM)</p>
 							</div>
 							<div className="col-span-1 flex-row text-center ml-10">
-								<p className="text-2xl">${cpms[ind]}</p>
-								<p className="italic">Average CPM</p>
+								<p className="text-2xl">
+									{clicks ? clicks[ind] : 'Fail'}
+									<span className="text-sm">
+										(${cpcs ? cpcs[ind] : 'Fail'})
+									</span>
+								</p>
+								<p className="italic">Clicks (CPC)</p>
 							</div>
 							<div className="col-span-1 flex-row text-center ml-10">
-								<p className="text-2xl">${cpcs[ind]}</p>
-								<p className="italic">Average CPC</p>
+								<p className="text-2xl">{spends ? spends[ind] : 'Fail'}</p>
+								<p className="italic">Total Revenue</p>
 							</div>
 							<div className="col-span-2 flex flex-row justify-end items-center">
 								<Link
 									className={buttonVariants({ variant: 'default' })}
-									href={
-										'/advertisers/networks/' +
-										network.networkId +
-										'/campaign/new'
-									}
+									href={''}
 								>
-									Create Campaign
+									Manage
 								</Link>
 							</div>
 						</div>
@@ -125,4 +198,6 @@ export default function BrowsePage(): JSX.Element {
 			</div>
 		</div>
 	);
-}
+};
+
+export default Page;
