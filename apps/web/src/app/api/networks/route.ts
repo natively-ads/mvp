@@ -11,12 +11,12 @@ export async function GET(req: NextRequest) {
 	const client = createClient(cookieStore);
 
 	const url = new URL(req.url);
-	const publisherId = url.searchParams.get('publisherId');
+	const publisherId = url.searchParams.get('publisherid');
 	const networkId = url.searchParams.get('networkId');
 	let query = client.from('networks').select('*');
 
 	if (publisherId != null) {
-		query = query.eq('publisher_id', publisherId);
+		query = query.eq('publisherId', publisherId);
 	}
 	if (networkId != null) {
 		query = query.eq('networkId', networkId);
