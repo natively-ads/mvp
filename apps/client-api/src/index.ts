@@ -1,43 +1,65 @@
 import express, { Request, Response } from 'express';
+import { createClient } from '@supabase/supabase-js';
+import { Campaign } from '@repo/types';
+import { holdSecondPriceCPMAuction } from './auctions/secondPriceCPM';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const port = process.env.CLIENT_API_PORT || 3001;
 
 const app = express();
 app.use(express.json());
 
-// get an ad from a network
-app.get('/ad-network/:networkId/ads', (req: Request, res: Response) => {
-	const networkId = req.params.networkId;
-	const adId = req.query.adId; // if this is undefined, get the highest bidding ad
+app.get('/health', (req: Request, res: Response) => {
+	res.status(200).send('Healthy');
+});
 
-	res.status(200).send(`Ad ${adId} from network ${networkId} returned`);
+// get an ad from a network
+app.get('/fetchAd/:networkId', async (req: Request, res: Response) => {
+	const networkId = req.params.networkId;
+	if (!networkId) {
+		res.status(500).send('Missing network id');
+	}
+	const result = await holdSecondPriceCPMAuction(networkId!, supabase);
+	res.status(200).json(result);
 });
 
 // post an impression for an ad
 app.post(
-	'/ad-network/:networkId/impressions',
-	(req: Request, res: Response) => {
-		const networkId = req.params.networkId;
+	'/registerimpression/:impressionId',
+	async (req: Request, res: Response) => {
+		const impressionId = req.params.impressionId;
+		if (!impressionId) {
+			res.status(500).send('Missing Impression Id');
+		}
+		const { data, error } = await supabase
+			.from('impressions')
+			.update({ adShown: true })
+			.eq('impressionId', impressionId);
 
-		// This is what's expected in the request body
-		const { adId, timestamp, viewerDetails } = req.body;
-
-		res
-			.status(201)
-			.send(`Impression for ad ${adId} in network ${networkId} recorded`);
+		console.log(error);
+		res.status(201).send(`Success`);
 	},
 );
 
-// post a click for an ad
-app.post('/ad-network/:networkId/clicks', (req: Request, res: Response) => {
-	const networkId = req.params.networkId;
+app.post(
+	'/registerclick/:impressionId',
+	async (req: Request, res: Response) => {
+		const impressionId = req.params.impressionId;
+		if (!impressionId) {
+			res.status(500).send('Missing Impression Id');
+		}
+		const { data, error } = await supabase.from('clicks').insert([
+			{
+				impressionId: impressionId,
+			},
+		]);
 
-	// What's expected in the request body
-	const { adId, timestamp, clickDetails } = req.body;
-
-	res.status(201).send(`Click for ad ${adId} in network ${networkId} recorded`);
-});
-
-app.listen(port, () => {
+		console.log(error);
+		res.status(201).send(`Success`);
+	},
+);
+app.listen(port, async () => {
 	console.log(`Server listening on port ${port}`);
 });
