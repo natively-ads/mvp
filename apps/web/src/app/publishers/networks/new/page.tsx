@@ -53,7 +53,7 @@ const adField = z.object({
 const networkFormObj = z.object({
 	name: z.string().min(2).max(100),
 	description: z.string().min(2).max(1000),
-	reservePrice: z.number().min(0).max(1000000),
+	reservePrice: z.coerce.number().min(0).max(1000000),
 });
 
 const PUBLISHER_ID_TEST = '1';
@@ -199,7 +199,11 @@ function CreateNetworkPage() {
 									<FormItem>
 										<FormLabel>Reserve Price</FormLabel>
 										<FormControl>
-											<Input placeholder="reservePrice" {...field} />
+											<Input
+												type="number"
+												placeholder="reservePrice"
+												{...field}
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -225,9 +229,9 @@ function CreateNetworkPage() {
 								</TableRow>
 							</TableHeader>
 							<TableBody>
-								{Object.values(adFields).map((adField) => {
+								{Object.values(adFields).map((adField, i) => {
 									return (
-										<TableRow>
+										<TableRow key={i}>
 											<TableHead>{adField.keyword}</TableHead>
 											<TableHead>{adField.type}</TableHead>
 											<TableHead>
@@ -282,8 +286,10 @@ function CreateNetworkPage() {
 													</SelectTrigger>
 												</FormControl>
 												<SelectContent>
-													{adFieldTypes.map((type) => (
-														<SelectItem value={type}>{type}</SelectItem>
+													{adFieldTypes.map((type, i) => (
+														<SelectItem key={i} value={type}>
+															{type}
+														</SelectItem>
 													))}
 												</SelectContent>
 											</Select>

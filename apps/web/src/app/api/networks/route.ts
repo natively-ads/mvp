@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
 	const cookieStore = cookies();
 	const client = createClient(cookieStore);
 
-	const rawNetwork = await client.from('networks').insert({
+	const response = await client.from('networks').insert({
 		publisherId,
 		name,
 		description,
@@ -68,6 +68,12 @@ export async function POST(request: NextRequest) {
 		adFormat,
 	});
 
-	const networkJson = rawNetwork.data ?? {};
+	console.log(response);
+
+	const networkJson = response.data;
+
+	if (response.error) {
+		return NextResponse.json({ error: response.error }, { status: 500 });
+	}
 	return NextResponse.json({ data: networkJson });
 }
