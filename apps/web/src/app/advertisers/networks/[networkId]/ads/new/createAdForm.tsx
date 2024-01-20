@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 interface CreateAdFormProps {
@@ -22,6 +23,7 @@ const CreateAdForm = ({
 }: CreateAdFormProps) => {
 	const [formData, setFormData] = useState<IFormData>({});
 	const [loading, setLoading] = useState(false);
+	const router = useRouter();
 
 	useEffect(() => {
 		const initialFormData: any = {};
@@ -54,6 +56,7 @@ const CreateAdForm = ({
 			}),
 		});
 		setLoading(false);
+		router.push(`/advertisers/networks/${networkId}/campaign/new`);
 	};
 
 	const renderFormFields = () => {
