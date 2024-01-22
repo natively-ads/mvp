@@ -133,10 +133,10 @@ function CreateNetworkPage() {
 		});
 
 		const responseJson = await response.json();
-		const data = responseJson.data;
+		const networkId = responseJson.data[0].networkId;
 
 		// navigate to the networks page
-		router.push(`/publishers/networks/${data.networkId}`);
+		router.push(`/publishers/networks/${networkId}`);
 	};
 
 	const addAdField = (
