@@ -106,7 +106,7 @@ const CreateAdForm = ({
 		});
 	};
 	return (
-		<div>
+		<div className="p-20">
 			<div>Create an Ad</div>
 			<div>Network: {networkName}</div>
 			<form onSubmit={handleSubmit}>
