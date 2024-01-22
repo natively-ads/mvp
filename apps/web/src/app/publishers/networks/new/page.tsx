@@ -160,7 +160,7 @@ function CreateNetworkPage() {
 	};
 
 	return (
-		<div className="flex flex-col gap-8 h-screen">
+		<div className="flex flex-col gap-8 h-screen p-20">
 			<div className="">
 				<div className="text-lg font-semibold">Step 1: General Settings</div>
 				<div className="flex justify-center">
@@ -197,7 +197,10 @@ function CreateNetworkPage() {
 								name="reservePrice"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Reserve Price</FormLabel>
+										<FormLabel>
+											Reserve Price (The minimum you will accept for 1000
+											impressions)
+										</FormLabel>
 										<FormControl>
 											<Input
 												type="number"

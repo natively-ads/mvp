@@ -15,9 +15,12 @@ const Page = async ({ params }: { params: { networkId: string } }) => {
 
 	const adRequest: Promise<Ad[]> = fetch(
 		`http://localhost:3000/api/ads?advertiserId=${ADVERTISER_ID}&networkId=${params.networkId}`,
+		{ cache: 'no-store' },
 	)
 		.then((res) => res.json())
-		.then((data: Ad[]) => data);
+		.then((data) => {
+			return data;
+		});
 
 	const [network, ads] = await Promise.all([networkRequest, adRequest]);
 

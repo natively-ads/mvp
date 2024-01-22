@@ -52,9 +52,6 @@ const CampaignFormElement = ({ network, ads }: CampaignFormProps) => {
 	const campaignForm = useForm<CampaignForm>({
 		resolver: zodResolver(campaignFormObj),
 		defaultValues: {
-			title: '',
-			budget: 0,
-			cpmBid: 0,
 			startDate: new Date(),
 			endDate: new Date(),
 		},
@@ -91,20 +88,23 @@ const CampaignFormElement = ({ network, ads }: CampaignFormProps) => {
 
 	return (
 		<Form {...campaignForm}>
-			<form onSubmit={campaignForm.handleSubmit(onSubmit)}>
+			<form onSubmit={campaignForm.handleSubmit(onSubmit)} className="mt-10">
 				<FormField
 					control={campaignForm.control}
 					name="title"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Campaign Title</FormLabel>
+							<FormLabel className="inline-block text-2xl font-normal mt-5">
+								Campaign Title
+							</FormLabel>
 							<FormControl>
 								<Input placeholder="Title" {...field} />
 							</FormControl>
 						</FormItem>
 					)}
 				/>
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+				<p className="text-2xl font-normal mt-5">Select Ad</p>
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
 					{ads &&
 						ads.map((ad, i) => (
 							<Card
@@ -126,17 +126,19 @@ const CampaignFormElement = ({ network, ads }: CampaignFormProps) => {
 						))}
 				</div>
 				<Link
-					className={buttonVariants({ variant: 'outline' })}
+					className={buttonVariants({ variant: 'outline' }) + ' mt-5'}
 					href={'/advertisers/networks/' + network.networkId + '/ads/new'}
 				>
-					Or Create a New Ad
+					Create a New Ad
 				</Link>
 				<FormField
 					control={campaignForm.control}
 					name="cpmBid"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>CPM Bid</FormLabel>
+							<FormLabel className="inline-block text-2xl font-normal mt-5">
+								CPM Bid
+							</FormLabel>
 							<FormControl>
 								<Input type="number" placeholder="CPM Bid" {...field} />
 							</FormControl>
@@ -149,7 +151,9 @@ const CampaignFormElement = ({ network, ads }: CampaignFormProps) => {
 					name="budget"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Budget</FormLabel>
+							<FormLabel className="inline-block text-2xl mt-5">
+								Budget
+							</FormLabel>
 							<FormControl>
 								<Input type="number" placeholder="Budget" {...field} />
 							</FormControl>
@@ -163,7 +167,9 @@ const CampaignFormElement = ({ network, ads }: CampaignFormProps) => {
 						name="startDate"
 						render={({ field }) => (
 							<FormItem className="flex flex-col">
-								<FormLabel>Start Date</FormLabel>
+								<FormLabel className="inline-block text-2xl font-normal mt-5">
+									Start Date
+								</FormLabel>
 								<Popover>
 									<PopoverTrigger asChild>
 										<FormControl>
@@ -204,7 +210,9 @@ const CampaignFormElement = ({ network, ads }: CampaignFormProps) => {
 						name="endDate"
 						render={({ field }) => (
 							<FormItem className="flex flex-col">
-								<FormLabel>End Date</FormLabel>
+								<FormLabel className="inline-block text-2xl font-normal mt-5">
+									End Date
+								</FormLabel>
 								<Popover>
 									<PopoverTrigger asChild>
 										<FormControl>
@@ -242,7 +250,12 @@ const CampaignFormElement = ({ network, ads }: CampaignFormProps) => {
 						)}
 					/>
 				</div>
-				<Button variant="default" type="submit" disabled={selectedAdId == null}>
+				<Button
+					variant="default"
+					type="submit"
+					disabled={selectedAdId == null}
+					className="mt-5"
+				>
 					Launch
 				</Button>
 			</form>

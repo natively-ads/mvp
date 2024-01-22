@@ -5,7 +5,7 @@ import { buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
 const Page = () => {
 	const [networks, setNetworks] = useState<Network[]>([]);
-	const publisherId = 2;
+	const publisherId = 1;
 	const [cpms, setCpms] = useState<number[]>([]);
 	const [cpcs, setCPCs] = useState<number[]>([]);
 	const [ctrs, setCtrs] = useState<number[]>([]);
@@ -15,7 +15,9 @@ const Page = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const networks = await fetch(`/api/networks?publisherid=${publisherId}`)
+			const networks = await fetch(`/api/networks?publisherid=${publisherId}`, {
+				cache: 'no-store',
+			})
 				.then((res) => {
 					return res.json();
 				})
