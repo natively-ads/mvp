@@ -60,15 +60,16 @@ export async function POST(request: NextRequest) {
 	const cookieStore = cookies();
 	const client = createClient(cookieStore);
 
-	const response = await client.from('networks').insert({
-		publisherId,
-		name,
-		description,
-		reservePrice,
-		adFormat,
-	});
-
-	console.log(response);
+	const response = await client
+		.from('networks')
+		.insert({
+			publisherId,
+			name,
+			description,
+			reservePrice,
+			adFormat,
+		})
+		.select('networkId');
 
 	const networkJson = response.data;
 

@@ -118,7 +118,7 @@ function CreateNetworkPage() {
 		const schema = adFieldsToJsonSchema(Object.values(adFields));
 		const networkFormValues = networkForm.getValues();
 
-		await fetch('/api/networks', {
+		const response = await fetch('/api/networks', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -132,8 +132,11 @@ function CreateNetworkPage() {
 			}),
 		});
 
+		const responseJson = await response.json();
+		const networkId = responseJson.data[0].networkId;
+
 		// navigate to the networks page
-		router.push('/publishers/networks');
+		router.push(`/publishers/networks/${networkId}`);
 	};
 
 	const addAdField = (
